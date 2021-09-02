@@ -17,21 +17,20 @@ public class User {
     private int genre;
 
     @Column(name="user_FName")
-    private char userFName;  //first name
+    private String userFName;  //first name
 
     @Column(name="user_LName")
-    private char userLName;//last name
+    private String userLName;//last name
     @Column(name="email")
-    private char email;
+    private String email;
 
     @Column(name="password")
-    private char password;
+    private String password;
 
-    @ManyToOne(cascade=CascadeType.ALL)
-    @JoinColumn(name="ecoleid")
-    private Ecole ecole;   //attribut ecole est classe ?
-     @OneToMany(mappedBy="enseignant")
-   private List<AffectationEnseignant> affectationEnseignant;
+    @OneToMany(mappedBy="enseignant")
+    private List<AffectationEnseignant> affectationEnseignant;
+    @ManyToMany(mappedBy = "user")
+    private List<AnneeScolaire> AnneeScolaire;
 
     public int getUserId() {
         return userId;
@@ -49,43 +48,51 @@ public class User {
         this.genre = genre;
     }
 
-    public char getUserFName() {
+    public String getUserFName() {
         return userFName;
     }
 
-    public void setUserFName(char userFName) {
+    public void setUserFName(String userFName) {
         this.userFName = userFName;
     }
 
-    public char getUserLName() {
+    public String getUserLName() {
         return userLName;
     }
 
-    public void setUserLName(char userLName) {
+    public void setUserLName(String userLName) {
         this.userLName = userLName;
     }
 
-    public char getEmail() {
+    public String getEmail() {
         return email;
     }
 
-    public void setEmail(char email) {
+    public void setEmail(String email) {
         this.email = email;
     }
 
-    public char getPassword() {
+    public String getPassword() {
         return password;
     }
 
-    public void setPassword(char password) {
+    public void setPassword(String password) {
         this.password = password;
     }
 
-    public Ecole getEcole() {
-        return ecole;
+    public List<AffectationEnseignant> getAffectationEnseignant() {
+        return affectationEnseignant;
     }
 
-    public void setEcole(Ecole ecole) {
-        this.ecole = ecole;
+    public void setAffectationEnseignant(List<AffectationEnseignant> affectationEnseignant) {
+        this.affectationEnseignant = affectationEnseignant;
+    }
+
+    public List<com.school.myschool.entity.AnneeScolaire> getAnneeScolaire() {
+        return AnneeScolaire;
+    }
+
+    public void setAnneeScolaire(List<com.school.myschool.entity.AnneeScolaire> anneeScolaire) {
+        AnneeScolaire = anneeScolaire;
     }
 }

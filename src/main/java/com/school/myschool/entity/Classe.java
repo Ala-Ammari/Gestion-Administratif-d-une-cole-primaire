@@ -13,13 +13,15 @@ public class Classe {
     @Column(name="classeNiveau")
     private int classeNiveau;
     @Column(name="classeName")
-    private char classeName;
+    private String classeName;
     @Column(name="nombre")
     private int nombre;
     @OneToMany(mappedBy="classe")
     private List<AffectationEnseignant> affectationEnseignant;
     @OneToMany(mappedBy="classe")
     private List<AffectationEleve> AffectationEleve;
+    @ManyToMany(mappedBy = "Classe")
+    private List<AnneeScolaire> AnneeScolaire;
     public Classe() {
     }
 
@@ -39,11 +41,11 @@ public class Classe {
         this.classeNiveau = classeNiveau;
     }
 
-    public char getClasseName() {
+    public String getClasseName() {
         return classeName;
     }
 
-    public void setClasseName(char classeName) {
+    public void setClasseName(String classeName) {
         this.classeName = classeName;
     }
 

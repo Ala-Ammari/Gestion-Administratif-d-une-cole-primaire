@@ -14,10 +14,11 @@ public class Matiere {
     @Column(name="matiere_Niveau")
     private int matiereNiveau;
     @Column(name="matiere_Name")
-    private char matiereName;
+    private String matiereName;
     @OneToMany(mappedBy="matiere")
     private List<AffectationEnseignant> affectationEnseignant;
-
+    @ManyToMany(mappedBy = "Matiere")
+    private List<AnneeScolaire> AnneeScolaire;
     public Matiere() {
     }
 
@@ -37,11 +38,11 @@ public class Matiere {
         this.matiereNiveau = matiereNiveau;
     }
 
-    public char getMatiereName() {
+    public String getMatiereName() {
         return matiereName;
     }
 
-    public void setMatiereName(char matiereName) {
+    public void setMatiereName(String matiereName) {
         this.matiereName = matiereName;
     }
 }

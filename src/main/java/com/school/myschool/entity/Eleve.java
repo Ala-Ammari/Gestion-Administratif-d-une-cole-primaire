@@ -2,7 +2,10 @@ package com.school.myschool.entity;
 
 import javax.persistence.*;
 import java.util.List;
-
+import javax.validation.Valid;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 @Entity
 @Table(name="Eleve")
 public class Eleve {
@@ -10,6 +13,7 @@ public class Eleve {
     @GeneratedValue(strategy= GenerationType.IDENTITY)
     @Column(name="id")
     private int eleveId;
+    @NotBlank
     @Column(name="eleveFName")
 
     private String eleveFName;  //first name
@@ -22,11 +26,14 @@ public class Eleve {
     @Column(name="numIscription")
 
     private int numIscription;
+    @Valid
     @Column(name="dateNaissance")
     private String dateNaissance;  //type cv ou non ?
 
     @OneToMany(mappedBy="eleve")
     private List<AffectationEleve> AffectationEleve;
+    @ManyToMany(mappedBy = "Eleve")
+    private List<AnneeScolaire> AnneeScolaire;
 
     public Eleve() {
     }

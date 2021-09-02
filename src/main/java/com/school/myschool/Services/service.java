@@ -19,11 +19,20 @@ public class service {
     }
     @Transactional
     public  List<Eleve> findAll() {
-        return dao.findAll();
+        return dao.findAllEleve();
     }
     @Transactional
     public void  save(Eleve eleve) {
-        dao.save(eleve);
+        dao.saveEleve(eleve);
     }
+    @Transactional
+    public Eleve  findById(int theId) {
+       return dao.findEleveById(theId);
+    }
+    @Transactional
+    public void  deleteById(int theId) {
+        dao.deleteEleveById(theId);
+    }
+
 
 }
