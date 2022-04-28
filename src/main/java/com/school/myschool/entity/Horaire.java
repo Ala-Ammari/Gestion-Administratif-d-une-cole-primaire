@@ -1,6 +1,7 @@
 package com.school.myschool.entity;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Table(name="Horaire")
@@ -11,8 +12,17 @@ public class Horaire {
      private int id;
     @Column(name="horaire")
      private String heure;
-
+    @OneToMany(mappedBy="horaire")
+    private List<emploiEntity> emploiEntity;
     public Horaire() {
+    }
+
+    public List<com.school.myschool.entity.emploiEntity> getEmploiEntity() {
+        return emploiEntity;
+    }
+
+    public void setEmploiEntity(List<com.school.myschool.entity.emploiEntity> emploiEntity) {
+        this.emploiEntity = emploiEntity;
     }
 
     public int getId() {

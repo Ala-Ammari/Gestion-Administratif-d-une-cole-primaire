@@ -17,6 +17,8 @@ public class Matiere {
     private String matiereName;
     @OneToMany(mappedBy="matiere")
     private List<AffectationEnseignant> affectationEnseignant;
+    @OneToMany(mappedBy="matiere")
+    private List<emploiEntity> emploiEntity;
     @ManyToMany(mappedBy = "Matiere")
     private List<AnneeScolaire> AnneeScolaire;
     public Matiere() {

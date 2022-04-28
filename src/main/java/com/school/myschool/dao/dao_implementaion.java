@@ -1,13 +1,12 @@
 package com.school.myschool.dao;
 
-import com.school.myschool.entity.Classe;
-import com.school.myschool.entity.Eleve;
-import com.school.myschool.entity.Matiere;
-import com.school.myschool.entity.User;
+import com.school.myschool.entity.*;
 import org.hibernate.Session;
 import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityManager;
@@ -24,7 +23,8 @@ public class dao_implementaion {
     public dao_implementaion(EntityManager theEntityManager) {
         entityManager = theEntityManager;
     }
-
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
  //crud Eleve
     public List<Eleve> findAllEleve() {
@@ -232,7 +232,7 @@ public class dao_implementaion {
 
         // get the current hibernate session
         Session currentSession = entityManager.unwrap(Session.class);
-
+theUser.setPassword(theUser.getEmail());
         // save User
         currentSession.saveOrUpdate(theUser);
     }
@@ -252,7 +252,123 @@ public class dao_implementaion {
     }
 
 
+    public List<emploiEntity> findAllemploiEntity() {
 
+        // get the current hibernate session
+        Session currentSession = entityManager.unwrap(Session.class);
+
+        // create a query
+        Query<emploiEntity> theQuery =
+                currentSession.createQuery("SELECT u FROM emploiEntity u ", emploiEntity.class);
+        // execute query and get result list
+        List<emploiEntity> emploiEntity = theQuery.getResultList();
+
+        // return the results
+        return emploiEntity;
+    }
+
+
+
+    public emploiEntity findemploiEntityById(int theId) {
+
+        // get the current hibernate session
+        Session currentSession = entityManager.unwrap(Session.class);
+
+        // get the User
+        emploiEntity emploiEntity =
+                currentSession.get(emploiEntity.class, theId);
+
+        // return the User
+        return emploiEntity;
+    }
+
+    public void saveemploiEntity(emploiEntity theemploiEntity) {
+
+        // get the current hibernate session
+        Session currentSession = entityManager.unwrap(Session.class);
+
+        // save User
+        currentSession.saveOrUpdate(theemploiEntity);
+    }
+
+    public void deleteemploiEntityById(int theId) {
+
+        // get the current hibernate session
+        Session currentSession = entityManager.unwrap(Session.class);
+
+        // delete object with primary key
+        Query theQuery =
+                currentSession.createQuery(
+                        "delete from emploiEntity where emploiEntityId=:UserId");
+        theQuery.setParameter("UserId", theId);
+
+        theQuery.executeUpdate();
+    }
+    public Horaire findHoraireById(int theId) {
+
+        // get the current hibernate session
+        Session currentSession = entityManager.unwrap(Session.class);
+
+        // get the User
+        Horaire Horaire =
+                currentSession.get(Horaire.class, theId);
+
+        // return the User
+        return Horaire;
+    }
+
+    public days finddayseById(int theId) {
+
+        // get the current hibernate session
+        Session currentSession = entityManager.unwrap(Session.class);
+
+        // get the User
+        days days =
+                currentSession.get(days.class, theId);
+
+        // return the User
+        return days;
+    }
+    public List<emploiEntity> findAllemploiEntityById(User enseignant) {
+
+        // get the current hibernate session
+        Session currentSession = entityManager.unwrap(Session.class);
+
+        // create a query
+        Query<emploiEntity> theQuery =
+                currentSession.createQuery("SELECT u FROM emploiEntity u where u.enseignant=:enseignant", emploiEntity.class);
+        theQuery.setParameter("enseignant", enseignant);
+
+        // execute query and get result list
+        List<emploiEntity> emploiEntity = theQuery.getResultList();
+
+        // return the results
+        return emploiEntity;
+    }
+    public void saveusers(User User) {
+
+        // get the current hibernate session
+        Session currentSession = entityManager.unwrap(Session.class);
+       String password= passwordEncoder.encode(User.getEmail());
+        users_spring users_spring=new users_spring(
+               User.getEmail(),
+                password, "ROLE_USER",1);
+        // save User
+        currentSession.saveOrUpdate(users_spring);
+    }
+    public User findenseignateByName(String email) {
+
+        // get the current hibernate session
+        Session currentSession = entityManager.unwrap(Session.class);
+
+        // get the User
+        Query<User> theQuery =
+                currentSession.createQuery("SELECT u FROM User u where u.email=:email", User.class);
+        theQuery.setParameter("email", email);
+          User user=theQuery.getSingleResult();
+        // return the User
+        return user;
+    }
 
 
 }

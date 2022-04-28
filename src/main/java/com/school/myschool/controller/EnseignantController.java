@@ -13,6 +13,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.Principal;
 import java.util.List;
 
 @RequestMapping("/Enseignant")
@@ -78,5 +79,15 @@ public class EnseignantController {
         // redirect to /employees/list
         return "redirect:/Enseignant/";
 
+    }
+    @GetMapping("/emploi")
+    public String showEmploi(Model theModel, Principal principal) {
+        List<Classe> listClasse =ServiceClasse.findAll();
+
+        // create model attribute to bind form data
+        String name=principal.getName();
+        User theEnseignant= service.findbyname(principal.getName());
+        theModel.addAttribute("Enseignant", theEnseignant);
+        return "Emploi";
     }
 }

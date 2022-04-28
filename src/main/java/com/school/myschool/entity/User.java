@@ -6,7 +6,7 @@ import javax.persistence.*;
 import java.util.List;
 
 @Entity
-@Table(name="User")
+@Table(name="Userss")
 public class User {
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
@@ -23,13 +23,15 @@ public class User {
     private String userLName;//last name
     @Column(name="email")
     private String email;
+    @OneToMany(mappedBy="enseignant")
+    private List<emploiEntity> emploiEntity;
 
     @Column(name="password")
     private String password;
 
     @OneToMany(mappedBy="enseignant")
     private List<AffectationEnseignant> affectationEnseignant;
-    @ManyToMany(mappedBy = "user")
+    @ManyToMany(mappedBy = "userss")
     private List<AnneeScolaire> AnneeScolaire;
 
     public int getUserId() {

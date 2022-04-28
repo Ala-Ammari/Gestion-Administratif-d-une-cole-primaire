@@ -1,4 +1,11 @@
+let listCustomers = [];
+let section = document.getElementById("section").value;
+
 document.addEventListener("DOMContentLoaded", function () {
+    let listemploi = [];
+
+
+
     const HOURS = [
         "8:00 - 9:00",
         "9:00 - 10:00",
@@ -41,7 +48,6 @@ document.addEventListener("DOMContentLoaded", function () {
         '#0A00B2',
         '#FF199D'
     ];
-
     let history = [];
 
     let BG_USED = new Array(BACKGROUNDS.length);
@@ -70,9 +76,44 @@ document.addEventListener("DOMContentLoaded", function () {
         }
         timetable.appendChild(div);
     }
-
+    let arrr = [];
     let cells = document.getElementsByClassName("cell");
     let addBtn = document.getElementById("add-btn");
+    console.log('listemploi :'+listemploi.length);
+    $.ajax({
+        type : "GET",
+        url : "/api/emploi/"+section,
+        success: function(result){
+
+            $.each(result, function(i, customer){
+                var customer = "{"+
+                    " \"matiere\": "+"\"" +customer.matiere +"\""+
+                    " , \"classe\": " +"\"" + customer.classe +"\""+
+                    ", \"enseignant\": " +"\"" + customer.enseignant +"\""+
+                    ", \"days\": " + "" +customer.days +""+
+                    ", \"hours\": " +"" + customer.hours +""+
+                    "}";
+                listemploi.push(JSON.parse(customer))
+                // console.log(customer);
+                // console.log(  JSON.stringify(customer));
+            })
+            for(let d=0; d<listemploi.length; d++){
+                let day = Number(listemploi[d].days);
+                console.log('day :'+day)
+                let hour = Number(listemploi[d].hours);
+                arrr.push(hour*8 + day);
+                cells[hour*8 + day].innerHTML = `<strong>${listemploi[d].matiere}</strong>${listemploi[d].enseignant}<br>${listemploi[d].classe}`;
+                let random = Math.floor(Math.random() * (BACKGROUNDS.length));
+                cells[hour*8 + day].style.background = BACKGROUNDS[random] + BG_OPACITY.toString();
+
+            }
+
+
+        },
+        error : function(e) {
+            console.log("ERROR: ", e);
+        }
+    });
 
     addBtn.addEventListener("click", addBtnHandler);
 
@@ -81,6 +122,10 @@ document.addEventListener("DOMContentLoaded", function () {
         let title = document.getElementById("course-title").value;
         let classroom = document.getElementById("classroom").value;
         let section = document.getElementById("section").value;
+        let teacher = document.getElementById("teacher").value;
+        //let text= title.options[title.selectedIndex].text;
+
+
         let days = $("#days").select2('val');
         let hours = $("#hours").select2('val');
 
@@ -94,6 +139,7 @@ document.addEventListener("DOMContentLoaded", function () {
             let arr = [];
             let flag = 0;
 
+
             for(let j=0; j<hours.length; j++) {
                 for(let i=0; i<days.length; i++) {
                     let day = Number(days[i]);
@@ -103,9 +149,8 @@ document.addEventListener("DOMContentLoaded", function () {
                         flag = 1;
                         break;
                     }
-                    
                     arr.push(hour*8 + day);
-                    cells[hour*8 + day].innerHTML = `<strong>${title}</strong>${section}<br>${classroom}`;
+                    cells[hour*8 + day].innerHTML = `<strong>${title}</strong>${teacher}<br>${classroom}`;
                     cells[hour*8 + day].style.background = BACKGROUNDS[random] + BG_OPACITY.toString();
                 }
                 if(flag === 1)
@@ -121,6 +166,23 @@ document.addEventListener("DOMContentLoaded", function () {
                 });
                 BACKGROUNDS[random] = 0;
             } else {
+                //        ajax start
+                let formCustomer = {
+                    matiere : document.getElementById("course-title").value,
+                    classe : document.getElementById("classroom").value,
+                    enseignant :  document.getElementById("section").value,
+                    days : days,
+                    hours : hours
+                }
+                listCustomers.push(formCustomer);
+                console.log(formCustomer);
+                $.ajax({
+                    type : "POST",
+                    url : "/api/save",
+                    data : formCustomer,
+                });
+
+//        ajax END
                 history.push({
                     bgColorIndex: random,
                     arr
@@ -209,9 +271,12 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
 });
-
+function ajaxPost(){
+   }
 
 $(document).ready(function() {
     $('#days').select2();
     $('#hours').select2();
 });
+
+

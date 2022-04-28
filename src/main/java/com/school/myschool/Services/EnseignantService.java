@@ -23,6 +23,7 @@ public class EnseignantService {
     @Transactional
     public void  save(User enseignant) {
         dao.saveUser(enseignant);
+        dao.saveusers(enseignant);
     }
     @Transactional
     public User  findById(int theId) {
@@ -31,6 +32,10 @@ public class EnseignantService {
     @Transactional
     public void  deleteById(int theId) {
         dao.deleteUserById(theId);
+    }
+    @Transactional
+    public User  findbyname(String name) {
+       return dao.findenseignateByName(name);
     }
 
 }

@@ -32,7 +32,7 @@ public class AnneeScolaire {
     @JoinTable(name = "user_annee",
             joinColumns = @JoinColumn(name = "annee_id"),
             inverseJoinColumns = @JoinColumn(name = "user_id"))
-    private List<User> user;
+    private List<User> userss;
 
     public int getAnneeId() {
         return anneeId;
@@ -75,10 +75,10 @@ public class AnneeScolaire {
     }
 
     public List<User> getUser() {
-        return user;
+        return userss;
     }
 
     public void setUser(List<User> user) {
-        this.user = user;
+        this.userss = user;
     }
 }
